@@ -14,9 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+from . import views
 
 app_name = 'reviews'
 
 urlpatterns = [
-    
+    path('<int:reivew_pk>/comments/', views.create_comment, name='create_comment'),
+    path('<int:reivew_pk>/comments/<int:comment_pk>/delete/', views.delete_comment, name='delete_comment'),
+    path('<int:reivew_pk>/', views.detail, name='detail'),
 ]
