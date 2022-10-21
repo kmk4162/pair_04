@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block css %}
+{% endblock css %}
+
+{% block content %}
+
+<a href="{% url 'reviews:create' %}"><h1>글 작성하기</h1></a>
+
+{% for review in reviews %}
+    <div style="border:1px solid black;">
+        <div style="padding:2rem;">
+            <h1>{{ review.movie_name }}</h1>
+            <h1>{{ review.title }}</h1>
+            <p>{{ review.created_at }} | {{ review.updated_at }}</p>
+            <a href="{% url 'reviews:detail' review.id %}">더보기</a>
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock content %}
