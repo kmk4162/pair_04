@@ -55,15 +55,16 @@ def delete(request, pk):
     return redirect('reviews:index')
 
 # 댓글 작성 함수
-@login_required
+
 def create_comment(request, review_pk):
     # 무슨 글인지 가져오고
     review = Review.objects.get(pk=review_pk)
-    comment_form = CommentForm(request.POST)
-    if comment_form.is_valid():
-        comment = comment_form.save(commit=False)
-        comment.review = review
-        comment.save()
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.review = review
+            comment.save()
     return redirect('reviews:detail', review_pk)
     
 # 댓글 삭제 함수
