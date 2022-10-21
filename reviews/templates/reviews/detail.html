@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block css %}
+{% endblock css %}
+
+{% block content %}
+
+<h1>{{ review.id }} 번째 글</h1>
+
+<div style="border:1px solid black;">
+    <div style="padding:2rem;">
+        <h1>{{ review.movie_name }}</h1>
+        <h1>{{ review.title }}</h1>
+        <p>{{ review.created_at }} | {{ review.updated_at }}</p>
+        <hr>
+        <h1>{{ review.content }}</h1>
+        <h1>{{ review.grade }}</h1>
+        <div style="display:flex; flex-direction:row;">
+            <a href="{% url 'reviews:update' review.id %}">수정하기</a>
+            <a href="{% url 'reviews:delete' review.id %}">삭제하기</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
