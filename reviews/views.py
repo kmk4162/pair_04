@@ -1,9 +1,29 @@
 from django.shortcuts import render, redirect
-from .models import Comment, Review
-from .forms import CommentForm
 from django.contrib.auth.decorators import login_required
+from .models import Comment, Review
+from .forms import CommentForm, ReviewForm
 
-# 글 및 댓글 보기 함수
+# Create your views here.
+def index(request):
+    reviews = Review.objects.order_by('-pk')
+    context = {
+        'reviews': reviews
+    }
+    return render(request, 'reviews/index.html', context)
+
+def create(request):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('reviews:index')
+    else:
+        form = ReviewForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'reviews/create.html', context)
+
 def detail(request, review_pk):
     review = Review.objects.get(pk=review_pk)
     comment_form = CommentForm()
@@ -14,6 +34,25 @@ def detail(request, review_pk):
         'comments' : comments,
     }
     return render(request, 'reviews/detail.html', context)
+
+def update(request, pk):
+    review = Review.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, instance=review)
+        if form.is_valid():
+            form.save()
+            return redirect('reviews:index')
+    else:
+        form = ReviewForm(instance=review)
+    context = {
+        'form': form
+    }
+    return render(request, 'reviews/update.html', context)
+
+def delete(request, pk):
+    review = Review.objects.get(pk=pk)
+    review.delete()
+    return redirect('reviews:index')
 
 # 댓글 작성 함수
 @login_required
@@ -26,7 +65,7 @@ def create_comment(request, review_pk):
         comment.review = review
         comment.save()
     return redirect('reviews:detail', review_pk)
-
+    
 # 댓글 삭제 함수
 @login_required
 def delete_comment(request, review_pk, comment_pk):
@@ -34,3 +73,8 @@ def delete_comment(request, review_pk, comment_pk):
     if comment.user == request.user:
         comment.delete()
     return redirect('reviews:detail', review_pk) 
+
+
+
+
+

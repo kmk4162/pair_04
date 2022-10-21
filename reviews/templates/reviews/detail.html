@@ -1,22 +1,40 @@
 {% extends 'base.html' %}
+
 {% load static %}
 {% load django_bootstrap5 %}
 
-{% block content %}
-<h1>detail 페이지</h1>
-{% comment %} 댓글 작성 기능 {% endcomment %}
-<h1>댓글 작성</h1>
-<form action="{% url 'reviews:create_comment' review.pk %}">
-  {% csrf_token %}
-  {% bootstrap_form comment_form %}
-  {% bootstrap_button button_type='submit' content='댓글달기' %}
-</form>
+{% block css %}
+{% endblock css %}
 
-{% comment %} 댓글 목록 {% endcomment %}
-<h1>댓글 목록</h1>
-{% for comment in comments %}
- {{ comment.user }}
- {{ comment.content }}
- <a href="{% url 'reviews:delete_comment' review.pk comment.pk %}">댓글 삭제</a>
-{% endfor %}
+{% block content %}
+
+<h1>{{ review.id }} 번째 글</h1>
+
+<div style="border:1px solid black;">
+    <div style="padding:2rem;">
+        <h1>{{ review.movie_name }}</h1>
+        <h1>{{ review.title }}</h1>
+        <p>{{ review.created_at }} | {{ review.updated_at }}</p>
+        <hr>
+        <h1>{{ review.content }}</h1>
+        <h1>{{ review.grade }}</h1>
+        <div style="display:flex; flex-direction:row;">
+            <a href="{% url 'reviews:update' review.id %}">수정하기</a>
+            <a href="{% url 'reviews:delete' review.id %}">삭제하기</a>
+        </div>
+        <form action="{% url 'reviews:create_comment' review.pk %}">
+          {% csrf_token %}
+          {% bootstrap_form comment_form %}
+          {% bootstrap_button button_type='submit' content='댓글달기' %}
+        </form>
+        <h1>댓글 목록</h1>
+        {% for comment in comments %}
+         {{ comment.user }}
+         {{ comment.content }}
+         <a href="{% url 'reviews:delete_comment' review.pk comment.pk %}">댓글 삭제</a>
+        {% endfor %}
+    </div>
+</div>
+<hr>
+
 {% endblock content %}
