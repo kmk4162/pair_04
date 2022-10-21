@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load static %}
 {% load django_bootstrap5 %}
 
 {% block css %}
@@ -21,8 +22,19 @@
             <a href="{% url 'reviews:update' review.id %}">수정하기</a>
             <a href="{% url 'reviews:delete' review.id %}">삭제하기</a>
         </div>
+        <form action="{% url 'reviews:create_comment' review.pk %}">
+          {% csrf_token %}
+          {% bootstrap_form comment_form %}
+          {% bootstrap_button button_type='submit' content='댓글달기' %}
+        </form>
+        <h1>댓글 목록</h1>
+        {% for comment in comments %}
+         {{ comment.user }}
+         {{ comment.content }}
+         <a href="{% url 'reviews:delete_comment' review.pk comment.pk %}">댓글 삭제</a>
+        {% endfor %}
     </div>
 </div>
-
+<hr>
 
 {% endblock content %}
