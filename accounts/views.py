@@ -19,10 +19,10 @@ def signup(request):
       return redirect('accounts:index')
   else:
     form = CustomUserCreationForm()
-    context = {
-      'form':form
-    }
-    return render(request, 'accounts/signup.html', context)
+  context = {
+    'form':form
+  }
+  return render(request, 'accounts/signup.html', context)
 
 @login_required
 def detail(request, pk):
@@ -37,7 +37,7 @@ def login(request):
     form = AuthenticationForm(request, data=request.POST)
     if form.is_valid():
       auth_login(request, form.get_user())
-    return redirect(request.GET.get('next') or 'accounts:index')
+      return redirect('reviews:index')
   else:
     form = AuthenticationForm()
   context = {

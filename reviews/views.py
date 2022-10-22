@@ -35,6 +35,7 @@ def detail(request, review_pk):
     }
     return render(request, 'reviews/detail.html', context)
 
+@login_required
 def update(request, pk):
     review = Review.objects.get(pk=pk)
     if request.method == 'POST':
@@ -49,6 +50,7 @@ def update(request, pk):
     }
     return render(request, 'reviews/update.html', context)
 
+@login_required
 def delete(request, pk):
     review = Review.objects.get(pk=pk)
     review.delete()
@@ -74,8 +76,3 @@ def delete_comment(request, review_pk, comment_pk):
     if comment.user == request.user:
         comment.delete()
     return redirect('reviews:detail', review_pk) 
-
-
-
-
-
