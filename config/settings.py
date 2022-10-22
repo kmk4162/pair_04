@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'imagekit',
     'django_extensions',
     'accounts',
-    'reviews'
+    'reviews',
 ]
 
 MIDDLEWARE = [

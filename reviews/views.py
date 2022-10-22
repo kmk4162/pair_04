@@ -15,7 +15,9 @@ def create(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
-            form.save()
+            review = form.save(commit=False)
+            review.user = request.user
+            review.save()
             return redirect('reviews:index')
     else:
         form = ReviewForm()
@@ -35,6 +37,7 @@ def detail(request, review_pk):
     }
     return render(request, 'reviews/detail.html', context)
 
+@login_required
 def update(request, pk):
     review = Review.objects.get(pk=pk)
     if request.method == 'POST':
@@ -55,7 +58,6 @@ def delete(request, pk):
     return redirect('reviews:index')
 
 # 댓글 작성 함수
-
 def create_comment(request, review_pk):
     # 무슨 글인지 가져오고
     review = Review.objects.get(pk=review_pk)
@@ -64,6 +66,7 @@ def create_comment(request, review_pk):
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.review = review
+            comment.user = request.user
             comment.save()
     return redirect('reviews:detail', review_pk)
     

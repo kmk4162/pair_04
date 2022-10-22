@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 
 class Review(models.Model):
-    # user = models.ForeignKey(settings.auth_user_)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
     content = models.TextField()
     movie_name = models.CharField(max_length=20)
@@ -12,6 +12,6 @@ class Review(models.Model):
     movie_image = models.ImageField(upload_to = 'images/', blank=True)
 
 class Comment(models.Model):
-    referring_review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=False)
     content = models.TextField()
