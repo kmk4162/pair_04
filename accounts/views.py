@@ -12,17 +12,17 @@ def index(request):
   return render(request, 'accounts/index.html')
 
 def signup(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('accounts:index')
-    else:
-        form = CustomUserCreationForm()
-    context = {
-       'form':form
-    }
-    return render(request, 'accounts/signup.html', context)
+  if request.method == 'POST':
+    form = CustomUserCreationForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return redirect('accounts:index')
+  else:
+    form = CustomUserCreationForm()
+  context = {
+    'form':form
+  }
+  return render(request, 'accounts/signup.html', context)
 
 @login_required
 def detail(request, pk):
@@ -36,8 +36,8 @@ def login(request):
   if request.method == 'POST':
     form = AuthenticationForm(request, data=request.POST)
     if form.is_valid():
-        auth_login(request, form.get_user())
-        return redirect('reviews:index')
+      auth_login(request, form.get_user())
+      return redirect('reviews:index')
   else:
     form = AuthenticationForm()
   context = {
