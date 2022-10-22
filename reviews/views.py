@@ -59,6 +59,7 @@ def delete(request, pk):
     return redirect('reviews:index')
 
 # 댓글 작성 함수
+@login_required
 def create_comment(request, review_pk):
     # 무슨 글인지 가져오고
     review = Review.objects.get(pk=review_pk)
